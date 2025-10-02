@@ -57,36 +57,38 @@ The project is configured to run on Replit with:
 - Access via the Replit webview
 
 ## Recent Changes
-- **2025-10-02:** UI/UX Modernization & Replit Configuration
-  - **Design System Updates:**
-    - Modernized color palette with vibrant blues and improved grays
-    - Added gradient effects to title and header logo
-    - Improved typography with better spacing and readability
-    - Enhanced input fields with focus rings and hover states
-    - Updated dropdowns with rounded corners and smooth transitions
-    - Redesigned example prompts as interactive cards
-    - Added smooth animations throughout the interface
-  - **Replit Environment Setup:**
-    - Updated vite.config.ts to bind to 0.0.0.0:5000
-    - Configured HMR for wss proxy
-    - Created .env.local with debug logging
-    - Set up Frontend workflow
-    - Configured Mistral API key for AI models
-  - **Bug Fixes:**
-    - Fixed model selector to only show available providers
-    - Ensured proper provider-model synchronization
+- **2025-10-02:** GitHub Import & Replit Environment Setup
+  - **Initial Setup:**
+    - Installed all dependencies with pnpm
+    - Verified Vite configuration (0.0.0.0:5000, HMR for WSS proxy)
+    - Created .env.local with debug logging enabled
+    - Configured Frontend workflow to run development server
+  - **Deployment Approach Decision:**
+    - Evaluated Vercel migration but decided against it (caused SSR errors)
+    - Kept original Cloudflare adapter - works perfectly in Replit's Node.js environment
+    - Environment variables use process.env fallback, ensuring compatibility across platforms
+  - **Why Cloudflare Adapter Works in Replit:**
+    - The app uses `process.env` fallback for all environment variables
+    - Cloudflare Workers types are only used for type checking, not runtime
+    - Vite dev server runs in Node.js regardless of adapter
+    - This is the most cost-effective, battle-tested approach
 
 ## Deployment
-The application is built with Cloudflare Pages in mind (uses `@remix-run/cloudflare` adapter). 
 
-**For Replit deployment:**
-- Development: `pnpm run dev` (runs on port 5000)
-- Production build: `pnpm run build`
+### Development (Replit)
+- **Command:** `pnpm run dev`
+- **Port:** 5000 (bound to 0.0.0.0)
+- **HMR:** Configured for WebSocket proxy compatibility
 
-**Note:** To deploy to Vercel or other platforms, you'll need to:
-- Install the appropriate Remix adapter (e.g., `@remix-run/vercel`)
-- Update `app/entry.server.tsx` imports
-- Modify build configuration
+### Production (Replit Autoscale)
+- **Build:** `pnpm run build`
+- **Start:** `pnpm run start` (uses Wrangler in Node.js mode)
+- **Deployment Target:** Autoscale (configured in .replit)
+
+### Alternative Platforms
+The Cloudflare adapter works in Node.js environments due to environment variable fallbacks. For true Cloudflare Pages deployment, use `pnpm run deploy`.
+
+For Vercel/other platforms: Consider using `@remix-run/node` adapter for better compatibility, though the current setup works due to the fallback system.
 
 ## Notes
 - Requires Node.js v20.15.1+
