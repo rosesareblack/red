@@ -1,4 +1,4 @@
-import { type ActionFunctionArgs } from '@vercel/remix';
+import { type ActionFunctionArgs } from '@remix-run/cloudflare';
 import { StreamingTextResponse, parseStreamPart } from 'ai';
 import { streamText } from '~/lib/.server/llm/stream-text';
 import { stripIndents } from '~/utils/stripIndent';
@@ -10,7 +10,7 @@ export async function action(args: ActionFunctionArgs) {
   return enhancerAction(args);
 }
 
-async function enhancerAction({ request }: ActionFunctionArgs) {
+async function enhancerAction({ context, request }: ActionFunctionArgs) {
   const { message } = await request.json<{ message: string }>();
 
   try {
@@ -29,7 +29,7 @@ async function enhancerAction({ request }: ActionFunctionArgs) {
         `,
         },
       ],
-      {} as Env,
+      context.cloudflare.env,
     );
 
     const transformStream = new TransformStream({

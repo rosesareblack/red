@@ -1,6 +1,6 @@
 // @ts-nocheck
 // Preventing TS checks with files presented in the video for a better presentation.
-import { type ActionFunctionArgs } from '@vercel/remix';
+import { type ActionFunctionArgs } from '@remix-run/cloudflare';
 import { MAX_RESPONSE_SEGMENTS, MAX_TOKENS } from '~/lib/.server/llm/constants';
 import { CONTINUE_PROMPT } from '~/lib/.server/llm/prompts';
 import { streamText, type Messages, type StreamingOptions } from '~/lib/.server/llm/stream-text';
@@ -10,7 +10,7 @@ export async function action(args: ActionFunctionArgs) {
   return chatAction(args);
 }
 
-async function chatAction({ request }: ActionFunctionArgs) {
+async function chatAction({ context, request }: ActionFunctionArgs) {
   const { messages } = await request.json<{ messages: Messages }>();
 
   const stream = new SwitchableStream();
@@ -34,13 +34,13 @@ async function chatAction({ request }: ActionFunctionArgs) {
         messages.push({ role: 'assistant', content });
         messages.push({ role: 'user', content: CONTINUE_PROMPT });
 
-        const result = await streamText(messages, {} as Env, options);
+        const result = await streamText(messages, context.cloudflare.env, options);
 
         return stream.switchSource(result.toAIStream());
       },
     };
 
-    const result = await streamText(messages, {} as Env, options);
+    const result = await streamText(messages, context.cloudflare.env, options);
 
     stream.switchSource(result.toAIStream());
 
