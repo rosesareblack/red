@@ -1,9 +1,4 @@
-import { type PlatformProxy } from 'wrangler';
-
-type Cloudflare = Omit<PlatformProxy<Env>, 'dispose'>;
-
-declare module '@remix-run/cloudflare' {
+declare module '@vercel/remix' {
   interface AppLoadContext {
-    cloudflare: Cloudflare;
   }
 }
