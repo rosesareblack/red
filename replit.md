@@ -57,17 +57,36 @@ The project is configured to run on Replit with:
 - Access via the Replit webview
 
 ## Recent Changes
-- **2025-10-02:** Configured for Replit environment
-  - Updated vite.config.ts to bind to 0.0.0.0:5000
-  - Configured HMR for wss proxy
-  - Created .env.local with debug logging
-  - Set up Frontend workflow
-  - Configured deployment for autoscale
+- **2025-10-02:** UI/UX Modernization & Replit Configuration
+  - **Design System Updates:**
+    - Modernized color palette with vibrant blues and improved grays
+    - Added gradient effects to title and header logo
+    - Improved typography with better spacing and readability
+    - Enhanced input fields with focus rings and hover states
+    - Updated dropdowns with rounded corners and smooth transitions
+    - Redesigned example prompts as interactive cards
+    - Added smooth animations throughout the interface
+  - **Replit Environment Setup:**
+    - Updated vite.config.ts to bind to 0.0.0.0:5000
+    - Configured HMR for wss proxy
+    - Created .env.local with debug logging
+    - Set up Frontend workflow
+    - Configured Mistral API key for AI models
+  - **Bug Fixes:**
+    - Fixed model selector to only show available providers
+    - Ensured proper provider-model synchronization
 
 ## Deployment
-The application is designed for Cloudflare Pages deployment. The Replit deployment is configured to:
-- Build: `pnpm run build`
-- Run: Production build served via Wrangler Pages
+The application is built with Cloudflare Pages in mind (uses `@remix-run/cloudflare` adapter). 
+
+**For Replit deployment:**
+- Development: `pnpm run dev` (runs on port 5000)
+- Production build: `pnpm run build`
+
+**Note:** To deploy to Vercel or other platforms, you'll need to:
+- Install the appropriate Remix adapter (e.g., `@remix-run/vercel`)
+- Update `app/entry.server.tsx` imports
+- Modify build configuration
 
 ## Notes
 - Requires Node.js v20.15.1+
