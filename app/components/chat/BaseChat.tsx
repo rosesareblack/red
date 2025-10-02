@@ -27,7 +27,7 @@ const providerList = [...new Set(MODEL_LIST.map((model) => model.provider))]
 const ModelSelector = ({ model, setModel, modelList, providerList }) => {
   const [provider, setProvider] = useState(DEFAULT_PROVIDER);
   return (
-    <div className="mb-2">
+    <div className="mb-4 space-y-2">
       <select
         value={provider}
         onChange={(e) => {
@@ -35,24 +35,18 @@ const ModelSelector = ({ model, setModel, modelList, providerList }) => {
           const firstModel = [...modelList].find(m => m.provider == e.target.value);
           setModel(firstModel ? firstModel.name : '');
         }}
-        className="w-full p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none"
+        className="w-full px-4 py-3 rounded-xl border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 transition-all duration-200 hover:border-accent-400"
       >
         {providerList.map((provider) => (
           <option key={provider} value={provider}>
             {provider}
           </option>
         ))}
-        <option key="Ollama" value="Ollama">
-          Ollama
-        </option>
-        <option key="OpenAILike" value="OpenAILike">
-          OpenAILike
-        </option>
       </select>
       <select
         value={model}
         onChange={(e) => setModel(e.target.value)}
-        className="w-full p-2 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none"
+        className="w-full px-4 py-3 rounded-xl border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary focus:outline-none focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 transition-all duration-200 hover:border-accent-400"
       >
         {[...modelList].filter(e => e.provider == provider && e.name).map((modelOption) => (
           <option key={modelOption.name} value={modelOption.name}>
@@ -122,13 +116,15 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         <div ref={scrollRef} className="flex overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
-              <div id="intro" className="mt-[26vh] max-w-chat mx-auto">
-                <h1 className="text-5xl text-center font-bold text-bolt-elements-textPrimary mb-2">
-                  Where ideas begin
-                </h1>
-                <p className="mb-4 text-center text-bolt-elements-textSecondary">
-                  Bring ideas to life in seconds or get help on existing projects.
-                </p>
+              <div id="intro" className="mt-[20vh] max-w-chat mx-auto text-center">
+                <div className="mb-8">
+                  <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-accent-600 via-accent-500 to-accent-700 bg-clip-text text-transparent mb-4 tracking-tight">
+                    Where ideas begin
+                  </h1>
+                  <p className="text-lg md:text-xl text-bolt-elements-textSecondary max-w-2xl mx-auto leading-relaxed">
+                    Bring your ideas to life with AI-powered development. Build full-stack applications in seconds.
+                  </p>
+                </div>
               </div>
             )}
             <div
@@ -161,12 +157,12 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 />
                 <div
                   className={classNames(
-                    'shadow-sm border border-bolt-elements-borderColor bg-bolt-elements-prompt-background backdrop-filter backdrop-blur-[8px] rounded-lg overflow-hidden',
+                    'shadow-lg shadow-accent-500/10 border border-bolt-elements-borderColor bg-bolt-elements-prompt-background backdrop-filter backdrop-blur-[8px] rounded-2xl overflow-hidden transition-all duration-200 hover:shadow-xl hover:shadow-accent-500/20 focus-within:ring-2 focus-within:ring-accent-500/30 focus-within:border-accent-500',
                   )}
                 >
                   <textarea
                     ref={textareaRef}
-                    className={`w-full pl-4 pt-4 pr-16 focus:outline-none resize-none text-md text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary bg-transparent`}
+                    className={`w-full pl-5 pt-5 pr-20 focus:outline-none resize-none text-md text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary bg-transparent`}
                     onKeyDown={(event) => {
                       if (event.key === 'Enter') {
                         if (event.shiftKey) {
@@ -241,8 +237,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               </div>
             </div>
             {!chatStarted && (
-              <div id="examples" className="relative w-full max-w-xl mx-auto mt-8 flex justify-center">
-                <div className="flex flex-col space-y-2 [mask-image:linear-gradient(to_bottom,black_0%,transparent_180%)] hover:[mask-image:none]">
+              <div id="examples" className="relative w-full max-w-3xl mx-auto mt-12 flex justify-center px-4">
+                <div className="flex flex-col space-y-3 w-full">
+                  <p className="text-sm font-medium text-bolt-elements-textSecondary text-center mb-2">Try these examples:</p>
                   {EXAMPLE_PROMPTS.map((examplePrompt, index) => {
                     return (
                       <button
@@ -250,10 +247,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         onClick={(event) => {
                           sendMessage?.(event, examplePrompt.text);
                         }}
-                        className="group flex items-center w-full gap-2 justify-center bg-transparent text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary transition-theme"
+                        className="group flex items-center w-full gap-3 px-5 py-3.5 justify-center bg-bolt-elements-prompt-background border border-bolt-elements-borderColor rounded-xl text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary hover:border-accent-400 hover:bg-accent-500/5 transition-all duration-200 hover:shadow-md"
                       >
-                        {examplePrompt.text}
-                        <div className="i-ph:arrow-bend-down-left" />
+                        <span className="flex-1 text-center">{examplePrompt.text}</span>
+                        <div className="i-ph:arrow-right opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-accent-500" />
                       </button>
                     );
                   })}
