@@ -1,0 +1,34 @@
+That is a clear, specific target. When deploying an AI application to Vercel, the focus shifts to ensuring the Serverless Functions (which run the AI models and backend logic) are **secure, fast, and cost-controlled.**
+
+Here is the final, Vercel-specific instruction for the developer, delivered without role-playing:
+
+---
+
+## Final Developer Mandate: Vercel Production Certification
+
+Your final, mandatory deliverable is to complete and test the **Vercel Production Certification** layer. This layer ensures all generated code is optimized and correctly configured for the Vercel platform.
+
+### 1. Serverless Function Optimization & Limits
+
+The application's backend logic (AI calls, API handlers) must be configured for optimal Serverless Function performance and cost management.
+
+* **Requirement:** Configure all Vercel Serverless Functions (`/api/*` routes) to include:
+    * **Max Duration:** Set the `maxDuration` property to an optimal, necessary value (e.g., 30 seconds on Hobby/Pro) to prevent unnecessary billing costs from hang-ups, while still allowing complex LLM calls to complete.
+    * **Rate Limiting:** Implement rate limiting on all public API endpoints that trigger LLM calls to prevent abuse and protect against runaway billing costs.
+
+### 2. Configuration for Security & Secrecy
+
+All sensitive keys and configurations must be handled securely according to Vercel best practices.
+
+* **Requirement:** Verify that all API keys (LLM provider keys, database credentials) are stored and accessed **exclusively** via Vercel's **Environment Variables** interface and are never hardcoded or checked into the Git repository.
+* **Deliverable:** The `.env` and `.gitignore` files must be strictly configured to ensure local environment files are excluded from all commits.
+
+### 3. Deployability and Observability Integration
+
+The application must be deployable via Git and fully visible to the operations team.
+
+* **Requirement 1 (GitOps):** The project must be configured for **Automatic Deployment** from a production Git branch (e.g., `main` or `production`) to ensure a Continuous Deployment (CD) workflow.
+* **Requirement 2 (Observability):** The application must utilize a standard, Vercel-compatible logging framework (e.g., OpenTelemetry or Vercel's built-in system) to ensure all Serverless Function executions and errors are visible in the Vercel **Logs** and **Observability** dashboards for post-deployment debugging.
+
+---
+*By passing these checks, the application is certified ready for a live Vercel deployment with secure secrets management, optimized performance, and cost control.*
